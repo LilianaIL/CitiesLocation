@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Users list</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-login">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <h2>Location</h2>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form id="location-form" name="location-form" role="form">
+                                    <div class="form-group">
+                                        <label for="userid">User id</label>
+                                        <input type="text" name="userid" id="userid" tabindex="1" class="form-control" placeholder="User id" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="latitude">Latitude</label>
+                                        <input type="text" name="latitude" id="latitude" tabindex="2" class="form-control" placeholder="latitude">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="longitude">Longitude</label>
+                                        <input type="text" name="longitude" id="longitude" tabindex="3" class="form-control" placeholder="longitude">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="radius">Radius</label>
+                                        <input type="text" name="radius" id="radius" tabindex="4" class="form-control" placeholder="radius km">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm-6 col-sm-offset-3">
+                                                <input type="submit" name="location-submit" id="location-submit" tabindex="5" class="form-control btn btn-primary" value="Send">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cities-div" style="display:none;">
+        <h2>Cities</h2>
+        <table class="table table-condensed table-striped cities-tbl col-md-6">
+            <thead><tr><th>Country</th><th>City</th><th>Latitude</th><th>Longitude</th></tr></thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
+    <script>
+        
+        var userId = localStorage.getItem("userId");
+        document.getElementById("userid").value = userId;
+        getLocation();
+
+
+        async function GetCities(data) {
+            
+            const response = await fetch("api/cities/CitiesList", {
+                method: "POST",
+                credentials: 'same-origin',
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+            if (response.ok === true) {
+                const result = await response.json();
+
+                if (result.status) {
+                    
+                    DeleteRows();
+
+                    const cities = result.result;
+                    let rows = document.querySelector("tbody");
+                    cities.forEach(city => {
+
+                        rows.append(row(city));
+                    });                    
+                    
+                    document.getElementsByClassName("cities-div")[0].style.display = "block"
+                    
+                }
+                else {
+                    window.location.href = window.location.origin + "/index.html";
+                }
+
+            }
+        }
+
+        document.forms["location-form"].addEventListener("submit", e => {
+            e.preventDefault();
+
+            const form = document.forms["location-form"];
+
+            var data = {
+                UserId: form.elements["userid"].value,
+                Latitude: parseFloat(form.elements["latitude"].value),
+                Longitude: parseFloat(form.elements["longitude"].value),
+                Radius: parseFloat(form.elements["radius"].value)
+            };
+            
+            GetCities(data);
+        });
+
+        function row(city) {
+
+            const tr = document.createElement("tr");
+            tr.setAttribute("data-rowid", city.cityId);
+
+            const countryTd = document.createElement("td");
+            countryTd.append(city.country);
+            tr.append(countryTd);
+
+            const asciiNameTd = document.createElement("td");
+            asciiNameTd.append(city.asciiName);
+            tr.append(asciiNameTd);
+
+            const latitudeTd = document.createElement("td");
+            latitudeTd.append(city.latitude);
+            tr.append(latitudeTd);
+
+            const longitudeTd = document.createElement("td");
+            longitudeTd.append(city.longitude);
+            tr.append(longitudeTd);
+            
+            return tr;
+        }
+
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                alert("Geolocation is not supported by this browser.");                
+            }
+        }
+
+        function showPosition(position) {
+            document.getElementById("latitude").value = position.coords.latitude;
+            document.getElementById("longitude").value = position.coords.longitude;            
+        }
+
+        function DeleteRows() {
+            $(".cities-tbl").find("tr:not(:first)").remove();
+        }
+    </script>
+</body>
+</html>

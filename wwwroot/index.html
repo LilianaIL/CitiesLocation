@@ -1,0 +1,273 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Users list</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+
+
+    <style>
+
+        body {
+            padding-top: 90px;
+        }
+
+        .panel-login {
+            border-color: #ccc;
+            -webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
+            -moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
+            box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.2);
+        }
+
+            .panel-login > .panel-heading {
+                color: #00415d;
+                background-color: #fff;
+                border-color: #fff;
+                text-align: center;
+            }
+
+                .panel-login > .panel-heading a {
+                    text-decoration: none;
+                    color: #666;
+                    font-weight: bold;
+                    font-size: 15px;
+                    -webkit-transition: all 0.1s linear;
+                    -moz-transition: all 0.1s linear;
+                    transition: all 0.1s linear;
+                }
+
+                    .panel-login > .panel-heading a.active {
+                        color: #029f5b;
+                        font-size: 18px;
+                    }
+
+                .panel-login > .panel-heading hr {
+                    margin-top: 10px;
+                    margin-bottom: 0px;
+                    clear: both;
+                    border: 0;
+                    height: 1px;
+                    background-image: -webkit-linear-gradient(left,rgba(0, 0, 0, 0),rgba(0, 0, 0, 0.15),rgba(0, 0, 0, 0));
+                    background-image: -moz-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
+                    background-image: -ms-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
+                    background-image: -o-linear-gradient(left,rgba(0,0,0,0),rgba(0,0,0,0.15),rgba(0,0,0,0));
+                }
+
+            .panel-login input[type="text"], .panel-login input[type="email"], .panel-login input[type="password"] {
+                height: 45px;
+                border: 1px solid #ddd;
+                font-size: 16px;
+                -webkit-transition: all 0.1s linear;
+                -moz-transition: all 0.1s linear;
+                transition: all 0.1s linear;
+            }
+
+            .panel-login input:hover,
+            .panel-login input:focus {
+                outline: none;
+                -webkit-box-shadow: none;
+                -moz-box-shadow: none;
+                box-shadow: none;
+                border-color: #ccc;
+            }
+
+        .btn-login {
+            background-color: #59B2E0;
+            outline: none;
+            color: #fff;
+            font-size: 14px;
+            height: auto;
+            font-weight: normal;
+            padding: 14px 0;
+            text-transform: uppercase;
+            border-color: #59B2E6;
+        }
+
+            .btn-login:hover,
+            .btn-login:focus {
+                color: #fff;
+                background-color: #53A3CD;
+                border-color: #53A3CD;
+            }
+
+        
+        .btn-register {
+            background-color: #1CB94E;
+            outline: none;
+            color: #fff;
+            font-size: 14px;
+            height: auto;
+            font-weight: normal;
+            padding: 14px 0;
+            text-transform: uppercase;
+            border-color: #1CB94A;
+        }
+
+            .btn-register:hover,
+            .btn-register:focus {
+                color: #fff;
+                background-color: #1CA347;
+                border-color: #1CA347;
+            }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <div class="alert alert-secondary" role="alert" style="display:none;"></div>      
+        
+        <div class="row justify-content-md-center">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="panel panel-login">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <a href="#" class="active" id="login-form-link">Login</a>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="#" id="register-form-link">Register</a>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <form id="login-form" name="login-form" role="form" style="display: block;">
+                                    <div class="form-group">
+                                        <input type="text" name="useremail" id="useremail" tabindex="1" class="form-control" placeholder="Useremail" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" name="userpassword" id="userpassword" tabindex="2" class="form-control" placeholder="Password">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row justify-content-md-center">
+                                            <div class="col-sm-6 col-sm-offset-3">
+                                                <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-login" value="Log In">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <form id="register-form" name="register-form" style="display: none;">
+                                    <div class="form-group">
+                                        <input type="email" name="email" id="email" tabindex="1" class="form-control" placeholder="Email Address" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" name="password" id="password" tabindex="2" class="form-control" placeholder="Password">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row justify-content-md-center">
+                                            <div class="col-sm-6 col-sm-offset-3">
+                                                <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Register Now">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
+
+    <script>
+        $(function () {
+            
+            $('#login-form-link').click(function (e) {
+                $("#login-form").delay(100).fadeIn(100);
+                $("#register-form").fadeOut(100);
+                $('#register-form-link').removeClass('active');
+                $(this).addClass('active');
+                e.preventDefault();
+            });
+            $('#register-form-link').click(function (e) {
+                $("#register-form").delay(100).fadeIn(100);
+                $("#login-form").fadeOut(100);
+                $('#login-form-link').removeClass('active');
+                $(this).addClass('active');
+                e.preventDefault();
+            });
+
+        });
+        
+        
+        
+        async function RegisterOrLoginUser(email, password, is_new_user) {
+            url = "api/users/";
+
+            if (is_new_user) {
+                url += "Create";
+            }
+            else {
+                url += "Login";
+            }
+
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Accept": "application/json", "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: email,
+                    password: password
+                })
+            });
+            if (response.ok === true) {
+                const user = await response.json();
+                
+                if (is_new_user) {                    
+                    $('.alert-secondary').html("User created");
+                    $('.alert-secondary').show();
+                    $('#login-form-link').click();
+                    await sleep(2000);
+                    $('.alert-secondary').alert("close");
+                    
+                }
+                else {
+                    localStorage.setItem("userId", user.userId)
+                    sessionStorage.setItem("token", user.token)
+
+                    var expire = new Date();
+                    expire.setMinutes(expire.getMinutes() + 10);
+                    document.cookie = "token=" + user.token + ";expires=" + expire.toUTCString() + ";";
+
+                    window.location.href = window.location.origin + "/test.html";
+                }
+                
+            }
+        }
+
+        document.forms["register-form"].addEventListener("submit", e => {
+            e.preventDefault();
+            const form = document.forms["register-form"];            
+            const email = form.elements["email"].value;
+            const password = form.elements["password"].value;
+            
+            RegisterOrLoginUser(email, password, true);            
+        });
+
+        document.forms["login-form"].addEventListener("submit", e => {
+            e.preventDefault();
+            const form = document.forms["login-form"];
+            const email = form.elements["useremail"].value;
+            const password = form.elements["userpassword"].value;
+
+            RegisterOrLoginUser(email, password, false);
+        });
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+             
+
+    </script>
+</body>
+</html>
